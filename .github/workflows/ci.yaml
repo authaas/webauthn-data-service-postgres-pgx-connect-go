@@ -19,8 +19,6 @@ jobs:
   ci-go:
     name: CI
     uses: katastroma/skeuotheke/.github/workflows/ci-go.yaml@v0
-    with:
-      working_directory: module
 
   version:
     name: CI
