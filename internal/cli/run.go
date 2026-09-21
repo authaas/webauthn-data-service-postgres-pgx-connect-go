@@ -71,7 +71,7 @@ func Run() int {
 	}
 	defer db.Close()
 
-	server := service.New(log, ops.New(db), db, db.Address())
+	server := service.New(ops.New(db), db, db.Address())
 
 	grpcdConfig, err := env.ParseAs[grpcdclient.Configuration]()
 	if err != nil {

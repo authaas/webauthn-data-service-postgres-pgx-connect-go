@@ -9,7 +9,6 @@ require (
 	buf.build/gen/go/authaas/webauthn-credential/protocolbuffers/go v1.36.12-20260920220605-a120bd032f0e.2
 	buf.build/gen/go/authaas/webauthn-data/protocolbuffers/go v1.36.12-20260920222759-7d33127b8e42.2
 	connectrpc.com/connect/v2 v2.0.0-alpha.1
-	git.sonicoriginal.software/logger v0.1.0
 	github.com/authaas/data-connect-go v0.1.0
 	github.com/authaas/data-postgres-pgx-go v0.1.1
 	github.com/authaas/identity-connect-go v0.2.0
@@ -31,6 +30,7 @@ require (
 )
 
 require (
+	git.sonicoriginal.software/logger v0.1.0 // indirect
 	github.com/cenkalti/backoff/v5 v5.0.3 // indirect
 	github.com/cenkalti/backoff/v7 v7.0.0 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect

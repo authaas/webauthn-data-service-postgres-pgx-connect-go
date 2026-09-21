@@ -4,7 +4,6 @@ package service
 import (
 	"context"
 	"errors"
-	"log/slog"
 	"testing"
 
 	"connectrpc.com/connect/v2"
@@ -35,8 +34,8 @@ const (
 )
 
 var (
-	credentialID  = []byte("credential-id")
-	digest        = []byte("0123456789abcdef0123456789abcdef")
+	credentialID   = []byte("credential-id")
+	digest         = []byte("0123456789abcdef0123456789abcdef")
 	loginChallenge = []byte("challenge-challenge-challenge-32")
 	clientDataJSON = []byte(`{"type":"webauthn.create"}`)
 	attestationObj = []byte("attestation-object")
@@ -72,7 +71,9 @@ func (q *queriesStub) GetCredential(context.Context, []byte) (ops.Credential, er
 	return q.credential, q.err
 }
 
-func (q *queriesStub) SetLoginChallenge(context.Context, ops.SetLoginChallengeParams) (int64, error) {
+func (q *queriesStub) SetLoginChallenge(
+	context.Context, ops.SetLoginChallengeParams,
+) (int64, error) {
 	return q.rows, q.err
 }
 
@@ -85,7 +86,7 @@ func (p pingerStub) Ping(context.Context) error { return p.err }
 
 // newServer builds a Server on the stubs.
 func newServer(queries *queriesStub, db pingerStub) *Server {
-	return New(slog.New(slog.DiscardHandler), queries, db, "db:5432")
+	return New(queries, db, "db:5432")
 }
 
 // storedKey is principalID in the stored form.
@@ -120,9 +121,10 @@ func storedCredential(t *testing.T) ops.Credential {
 
 // identityRecord is the identity half of a Register request.
 func identityRecord(id string) *identitydata.Record {
+	profile := identity.Profile_builder{Name: "name", DisplayName: "display"}.Build()
 	return identitydata.Record_builder{
 		Principal:             identity.Principal_builder{Id: id}.Build(),
-		Profile:               identity.Profile_builder{Name: "name", DisplayName: "display"}.Build(),
+		Profile:               profile,
 		CreationDate:          1,
 		LastAuthenticatedDate: 1,
 		GrantHash:             token.GrantHash_builder{Bytes: digest}.Build(),
@@ -131,12 +133,13 @@ func identityRecord(id string) *identitydata.Record {
 
 // credentialRecord is the credential half of a Register request.
 func credentialRecord() *credential.Record {
+	attObj := attestationobject.Object_builder{Bytes: attestationObj}.Build()
 	return credential.Record_builder{
 		Credential: credentialid.ID_builder{Bytes: credentialID}.Build(),
 		Principal:  identity.Principal_builder{Id: principalID}.Build(),
 		Attestation: attestationresponse.Response_builder{
 			ClientDataJson:    clientdata.JSON_builder{Bytes: clientDataJSON}.Build(),
-			AttestationObject: attestationobject.Object_builder{Bytes: attestationObj}.Build(),
+			AttestationObject: attObj,
 			Transports:        transports,
 		}.Build(),
 		RpId: relyingparty.ID_builder{Value: "example.test"}.Build(),

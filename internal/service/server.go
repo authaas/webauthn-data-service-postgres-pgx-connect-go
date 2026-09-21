@@ -2,10 +2,6 @@
 package service
 
 import (
-	"log/slog"
-
-	"git.sonicoriginal.software/logger"
-
 	"github.com/authaas/webauthn-data-bindings-connect-go/webauthn/data/dataconnect"
 )
 
@@ -13,7 +9,6 @@ import (
 type Server struct {
 	dataconnect.UnimplementedServiceHandler
 
-	log     *slog.Logger
 	queries Queries
 	db      Pinger
 	address string
@@ -21,10 +16,6 @@ type Server struct {
 
 // New returns a Server over queries, reporting db under StorageCheckName at
 // address.
-func New(log *slog.Logger, queries Queries, db Pinger, address string) *Server {
-	if log == nil {
-		log = logger.NewNullLogger()
-	}
-
-	return &Server{log: log, queries: queries, db: db, address: address}
+func New(queries Queries, db Pinger, address string) *Server {
+	return &Server{queries: queries, db: db, address: address}
 }
