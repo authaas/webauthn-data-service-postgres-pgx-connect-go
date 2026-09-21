@@ -12,7 +12,7 @@ import (
 	relyingparty "buf.build/gen/go/authaas/webauthn-credential/protocolbuffers/go/webauthn/relying_party"
 	"buf.build/gen/go/authaas/webauthn-data/protocolbuffers/go/webauthn/data/credential"
 	"buf.build/gen/go/authaas/webauthn-data/protocolbuffers/go/webauthn/data/login"
-	principal "github.com/authaas/identity-pgx-go"
+	"github.com/authaas/identity-pgx-go/principal"
 	ops "github.com/authaas/webauthn-schema-postgres-bindings-pgx-go"
 )
 

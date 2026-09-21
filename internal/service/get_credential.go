@@ -11,6 +11,8 @@ import (
 	errors "github.com/pbrpc/connect-errors"
 
 	"buf.build/gen/go/authaas/webauthn-data/protocolbuffers/go/webauthn/data"
+	store "github.com/authaas/data-connect-go"
+	"github.com/authaas/webauthn-data-bindings-connect-go/webauthn/data/dataconnect"
 )
 
 // GetCredential answers with the credential's record.
@@ -25,12 +27,12 @@ func (s *Server) GetCredential(
 	}
 
 	if err != nil {
-		return nil, storeFailed(ctx, "read the credential", err)
+		return nil, store.StoreFailed(ctx, dataconnect.ServiceName, "read the credential", err)
 	}
 
 	record, err := record(row)
 	if err != nil {
-		return nil, storeFailed(ctx, "read the credential", err)
+		return nil, store.StoreFailed(ctx, dataconnect.ServiceName, "read the credential", err)
 	}
 
 	return data.GetCredentialResponse_builder{Record: record}.Build(), nil

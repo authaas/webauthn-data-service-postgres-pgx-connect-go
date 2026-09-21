@@ -12,29 +12,32 @@ import (
 	errors "github.com/pbrpc/connect-errors"
 
 	"buf.build/gen/go/authaas/webauthn-data/protocolbuffers/go/webauthn/data"
-	principal "github.com/authaas/identity-pgx-go"
+	store "github.com/authaas/data-connect-go"
+	identity "github.com/authaas/identity-connect-go"
+	"github.com/authaas/identity-pgx-go/principal"
+	"github.com/authaas/webauthn-data-bindings-connect-go/webauthn/data/dataconnect"
 	ops "github.com/authaas/webauthn-schema-postgres-bindings-pgx-go"
 )
 
 // Register establishes an identity with its credential, as one statement.
 // A unique violation on either aborts it, and nothing is established.
 func (s *Server) Register(ctx context.Context, req *data.RegisterRequest) (*data.RegisterResponse, error) {
-	identity, credential := req.GetIdentityRecord(), req.GetCredentialRecord()
+	record, credential := req.GetIdentityRecord(), req.GetCredentialRecord()
 
-	id, err := principal.Key(identity.GetPrincipal())
+	id, err := principal.Key(record.GetPrincipal())
 	if err != nil {
-		return nil, invalidKey(ctx)
+		return nil, identity.InvalidPrincipal(ctx)
 	}
 
 	attestation, state := credential.GetAttestation(), credential.GetLogin()
 
 	err = s.queries.Register(ctx, ops.RegisterParams{
 		ID:                        id,
-		Name:                      identity.GetProfile().GetName(),
-		DisplayName:               identity.GetProfile().GetDisplayName(),
-		CreationDate:              identity.GetCreationDate(),
-		LastAuthenticatedDate:     identity.GetLastAuthenticatedDate(),
-		GrantHash:                 identity.GetGrantHash().GetBytes(),
+		Name:                      record.GetProfile().GetName(),
+		DisplayName:               record.GetProfile().GetDisplayName(),
+		CreationDate:              record.GetCreationDate(),
+		LastAuthenticatedDate:     record.GetLastAuthenticatedDate(),
+		GrantHash:                 record.GetGrantHash().GetBytes(),
 		ID_2:                      credential.GetCredential().GetBytes(),
 		SignCount:                 int64(state.GetSignCount()),
 		UvInitialized:             state.GetUvInitialized(),
@@ -51,7 +54,7 @@ func (s *Server) Register(ctx context.Context, req *data.RegisterRequest) (*data
 	}
 
 	if err != nil {
-		return nil, storeFailed(ctx, "register", err)
+		return nil, store.StoreFailed(ctx, dataconnect.ServiceName, "register", err)
 	}
 
 	return &data.RegisterResponse{}, nil

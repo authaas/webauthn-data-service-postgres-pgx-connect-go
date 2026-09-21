@@ -7,6 +7,8 @@ import (
 	errors "github.com/pbrpc/connect-errors"
 
 	"buf.build/gen/go/authaas/webauthn-data/protocolbuffers/go/webauthn/data"
+	store "github.com/authaas/data-connect-go"
+	"github.com/authaas/webauthn-data-bindings-connect-go/webauthn/data/dataconnect"
 	ops "github.com/authaas/webauthn-schema-postgres-bindings-pgx-go"
 )
 
@@ -26,7 +28,7 @@ func (s *Server) Login(ctx context.Context, req *data.LoginRequest) (*data.Login
 		LastAuthenticatedDate: req.GetLastAuthenticatedDate(),
 	})
 	if err != nil {
-		return nil, storeFailed(ctx, "record the login", err)
+		return nil, store.StoreFailed(ctx, dataconnect.ServiceName, "record the login", err)
 	}
 
 	if rows == 0 {

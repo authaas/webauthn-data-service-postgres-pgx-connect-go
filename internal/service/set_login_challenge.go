@@ -8,6 +8,8 @@ import (
 	errors "github.com/pbrpc/connect-errors"
 
 	"buf.build/gen/go/authaas/webauthn-data/protocolbuffers/go/webauthn/data"
+	store "github.com/authaas/data-connect-go"
+	"github.com/authaas/webauthn-data-bindings-connect-go/webauthn/data/dataconnect"
 	ops "github.com/authaas/webauthn-schema-postgres-bindings-pgx-go"
 )
 
@@ -23,7 +25,7 @@ func (s *Server) SetLoginChallenge(
 		CurrentLoginChallenge: req.GetChallenge().GetBytes(),
 	})
 	if err != nil {
-		return nil, storeFailed(ctx, "set the login challenge", err)
+		return nil, store.StoreFailed(ctx, dataconnect.ServiceName, "set the login challenge", err)
 	}
 
 	if rows == 0 {
