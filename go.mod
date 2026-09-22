@@ -21,11 +21,11 @@ require (
 	github.com/jackc/pgx/v5 v5.11.0
 	github.com/pbrpc/connect-errors v0.1.1
 	github.com/pbrpc/connect-protos v0.2.1
-	github.com/pbrpc/connect-server v0.1.1
-	github.com/pbrpc/connect-service v0.3.0
+	github.com/pbrpc/connect-server v0.2.0
+	github.com/pbrpc/connect-service v0.3.1
 	github.com/pbrpc/http-transport v0.3.0
 	github.com/pbrpc/lifecycle v0.2.0
-	github.com/pbrpc/otel v0.3.0
+	github.com/pbrpc/otel v0.4.1
 	github.com/pbrpc/service v0.2.0
 )
 
@@ -44,6 +44,7 @@ require (
 	github.com/jackc/pgservicefile v0.0.0-20240606120523-5a60cdf6a761 // indirect
 	github.com/jackc/puddle/v2 v2.2.2 // indirect
 	github.com/pbrpc/connect-client v0.1.1 // indirect
+	github.com/pbrpc/connect-otel v0.1.0 // indirect
 	github.com/pbrpc/http-server v0.3.1 // indirect
 	go.opentelemetry.io/auto/sdk v1.2.1 // indirect
 	go.opentelemetry.io/contrib/bridges/otelslog v0.20.1 // indirect
