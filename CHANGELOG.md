@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## 0.3.0 - 2026-09-22
+#### Features
+- instance in logging - (c2b6110) - Nathan Blair
+#### Tests
+- remove empty test assertion - (9e05f81) - Nathan Blair
+
+- - -
+
 ## 0.2.0 - 2026-09-21
 #### Features
 - remove Server logger - (bac02d0) - Nathan Blair
