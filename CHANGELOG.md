@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## 0.3.1 - 2026-09-22
+#### Bug Fixes
+- use correct Dockerfile - (4c2f92f) - Nathan Blair
+
+- - -
+
 ## 0.3.0 - 2026-09-22
 #### Features
 - instance in logging - (c2b6110) - Nathan Blair
